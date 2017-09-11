@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 5.5.9
+  - 5.6
+  - 7.0
+  - hhvm
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: hhvm
+
+before_install:
+  - composer self-update
+  - composer install --prefer-source --no-interaction
+  - composer require satooshi/php-coveralls
+
+script:
+  - composer install --prefer-source --no-interaction
+  - phpunit tests/ --coverage-clover build/logs/clover.xml
+
+after_script: php vendor/bin/coveralls -v

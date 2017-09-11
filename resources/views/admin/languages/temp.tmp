@@ -1,0 +1,20 @@
+        @foreach($sentences as $key => $value)
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-semibold">{{ $key }}</label>
+                            </div>
+                            <div class="col-xs-9 col-sm-10 col-md-7">
+                                @include('helpers.form_control', [
+                                    'type' => 'text',
+                                    'label' => '',
+                                    'class' => '',
+                                    'name' => $key,
+                                    'value' => $value,
+                                    'help_class' => 'language'
+                                ])
+                            </div>
+                            <div class="col-xs-3 col-sm-2 col-md-2">
+                                <button class="btn btn-info bg-info-800">Save</button>
+                            </div>
+                        </div>
+                    @endforeach
