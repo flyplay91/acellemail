@@ -20,7 +20,7 @@ if (!(file_exists('../storage/app') && is_dir('../storage/app') && (is_writable(
 // proc_close() check =========
 $proc_close_enabled = true;
 try {
-    proc_close();
+    // proc_close();
     $disabled = explode(',', ini_get('disable_functions'));
     $proc_close_enabled = !in_array('proc_close', $disabled);
 } catch (\Exception $ex) {
@@ -34,7 +34,7 @@ if (!$proc_close_enabled) {
 // escapeshellarg() check =========
 $escapeshellarg_enabled = true;
 try {
-    escapeshellarg();
+    // escapeshellarg();
     $disabled = explode(',', ini_get('disable_functions'));
     $escapeshellarg_enabled = !in_array('escapeshellarg', $disabled);
 } catch (\Exception $ex) {

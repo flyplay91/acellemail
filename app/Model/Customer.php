@@ -57,17 +57,17 @@ class Customer extends Model
     {
         $rules = array(
             'email' => 'required|email|unique:users,email,'.$this->user_id.',id',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'timezone' => 'required',
-            'language_id' => 'required',
+            // 'first_name' => 'required',
+            // 'last_name' => 'required',
+            // 'timezone' => 'required',
+            // 'language_id' => 'required',
         );
 
-        if (isset($this->id)) {
-            $rules['password'] = 'confirmed|min:5';
-        } else {
-            $rules['password'] = 'required|confirmed|min:5';
-        }
+        // if (isset($this->id)) {
+        //     $rules['password'] = 'confirmed|min:5';
+        // } else {
+        //     $rules['password'] = 'required|confirmed|min:5';
+        // }
 
         return $rules;
     }
@@ -1040,11 +1040,11 @@ class Customer extends Model
     {
         return array(
             'email' => 'required|email|unique:users,email,'.$this->user_id.',id',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'timezone' => 'required',
-            'language_id' => 'required',
-            'password' => 'required|min:5',
+            // 'first_name' => 'required',
+            // 'last_name' => 'required',
+            // 'timezone' => 'required',
+            // 'language_id' => 'required',
+            // 'password' => 'required|min:5',
         );
     }
 
@@ -1066,14 +1066,14 @@ class Customer extends Model
         if(isset($request->last_name)) {
             $arr['last_name'] = 'required';
         }
-        if(isset($request->timezone)) {
-            $arr['timezone'] = 'required';
-        }
-        if(isset($request->language_id)) {
-            $arr['language_id'] = 'required';
-        }
-        if(isset($request->password)) {
-            $arr['password'] = 'min:5';
+        // if(isset($request->timezone)) {
+        //     $arr['timezone'] = 'required';
+        // }
+        // if(isset($request->language_id)) {
+        //     $arr['language_id'] = 'required';
+        // }
+        // if(isset($request->password)) {
+        //     $arr['password'] = 'min:5';
         }
 
         return $arr;

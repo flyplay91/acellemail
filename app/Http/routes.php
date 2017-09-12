@@ -61,6 +61,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api/v1', 'middleware' => 'auth:
     // Customer
     Route::patch('customers/{uid}/disable', 'CustomerController@disable');
     Route::patch('customers/{uid}/enable', 'CustomerController@enable');
+    // Route::post('customers/update-by-email', 'CustomerController@updateByEmail');
     Route::resource('customers', 'CustomerController');
 
     // Subscription

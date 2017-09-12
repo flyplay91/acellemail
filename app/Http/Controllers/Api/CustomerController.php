@@ -19,10 +19,91 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function updateByEmail(Request $request) {
+
+        if(!isset($reuqest->email) || empty($reuqest->email)) {
+            return \Response::json(array('message' => 'Email is requried'), 404);
+        }
+        $email = $reuqest->email;
+        $user = \Acelle\Model\User::findByEmail($email);
+
+        // check if item exists
+        if (!is_object($user)) {
+            return \Response::json(array('message' => 'User not found'), 404);
+        }
+        $uid = $user->uid;
+
+        // Get current user
+        $current_user = \Auth::guard('api')->user();
+        $customer = \Acelle\Model\Customer::findByUid($uid);
+
+        // check if item exists
+        if (!is_object($customer)) {
+            return \Response::json(array('message' => 'Item not found'), 404);
+        }
+
+        // authorize
+        if (!$current_user->can('update', $customer)) {
+            return \Response::json(array('message' => 'Unauthorized'), 401);
+        }
+
+        // save posted data
+        if ($request->isMethod('post')) {
+
+            if($this->isDemoMode()) {
+                return $this->notAuthorized();
+            }
+
+            $rules = $customer->apiUpdateRules($request);
+
+            $validator = \Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json($validator->messages(), 403);
+            }
+
+            // Update user account for customer
+            $user = $customer->user;
+            if (!empty($request->email)) {
+                $user->email = $request->email;
+            }
+            // Update password
+            if (!empty($request->password)) {
+                $user->password = bcrypt($request->password);
+            }
+            $user->save();
+
+            // Save current user info
+            $customer->fill($request->all());
+            $customer->save();
+
+            // Upload and save image
+            if ($request->hasFile('image')) {
+                if ($request->file('image')->isValid()) {
+                    // Remove old images
+                    $customer->removeImage();
+                    $customer->image = $customer->uploadImage($request->file('image'));
+                }
+            }
+
+            // Remove image
+            if ($request->_remove_image == 'true') {
+                $customer->removeImage();
+                $customer->image = '';
+            }
+
+            return \Response::json(array(
+                'message' => trans('messages.customer.updated'),
+                'customer_uid' => $customer->uid
+            ), 200);
+        }
+    }
+
     public function store(Request $request)
     {
         // Get current user
         $current_user = \Auth::guard('api')->user();
+
         $customer = new \Acelle\Model\Customer();
 
         // authorize
@@ -42,6 +123,8 @@ class CustomerController extends Controller
             // Create user account for customer
             $user = new \Acelle\Model\User();
             $user->email = $request->email;
+
+
             // Update password
             if (!empty($request->password)) {
                 $user->password = bcrypt($request->password);

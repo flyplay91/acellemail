@@ -180,6 +180,11 @@ class User extends Authenticatable
         return self::where('uid', '=', $uid)->first();
     }
 
+    public static function findByEmail($email)
+    {
+        return self::where('uid', '=', $email)->first();
+    }
+
     /**
      * Check if user has admin account.
      */

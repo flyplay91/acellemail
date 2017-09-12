@@ -370,7 +370,7 @@ class ApiHelper
                     'parameters' => [
                     ],
                     'returns' => 'Creation messages in json',
-                    'example' => 'curl -X POST -H "accept:application/json" -G \
+                    'example' => 'curl -X POST -H "accept:application/json" -G \ 
 ' . action("Api\CustomerController@store") . '? \
 -d api_token=' . \Auth::user()->api_token . '  \
 -d email=user_name@gmail.com \
